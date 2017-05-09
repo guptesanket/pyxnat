@@ -1,10 +1,22 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
+from builtins import next
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import zip
+from past.builtins import basestring
+from builtins import object
 import os
 import re
 import glob
 import csv
 import difflib
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 
@@ -430,9 +442,9 @@ class SearchManager(object):
 
         results = csv.reader(StringIO(content), delimiter=',', quotechar='"')
 
-        headers = results.next()
+        headers = next(results)
 
-        return JsonTable([dict(zip(headers, res))
+        return JsonTable([dict(list(zip(headers, res)))
                           for res in results
                           ],
                          headers
@@ -494,7 +506,7 @@ class SearchManager(object):
                                            constraint[1],
                                            '%%(%s)s' % constraint[2])
                                           )
-                elif isinstance(constraint, (unicode, str)):
+                elif isinstance(constraint, str):
                     query_template.append(constraint)
                 elif isinstance(constraint, list):
                     query_template.append(_make_template(constraint))
@@ -567,9 +579,9 @@ class SearchManager(object):
             "%s/search?format=csv" % self._intf._entry, 'POST', bundle)
 
         results = csv.reader(StringIO(content), delimiter=',', quotechar='"')
-        headers = results.next()
+        headers = next(results)
 
-        return JsonTable([dict(zip(headers, res))
+        return JsonTable([dict(list(zip(headers, res)))
                           for res in results
                           ],
                          headers
@@ -680,7 +692,7 @@ class Search(object):
         """
         self._intf._get_entry_point()
 
-        if isinstance(constraints, (str, unicode)):
+        if isinstance(constraints, str):
             constraints = rpn_contraints(constraints)
         elif isinstance(template, (tuple)):
             tmp_bundle = self._intf.manage.search.get_template(
@@ -688,7 +700,7 @@ class Search(object):
 
             tmp_bundle = tmp_bundle % template[1]
             constraints = query_from_xml(tmp_bundle)['constraints']
-        elif isinstance(query, (str, unicode)):
+        elif isinstance(query, str):
             tmp_bundle = self._intf.manage.search.get(query, 'xml')
             constraints = query_from_xml(tmp_bundle)['constraints']
         elif isinstance(constraints, list):
@@ -706,7 +718,7 @@ class Search(object):
             catch_error(content)
 
         results = csv.reader(StringIO(content), delimiter=',', quotechar='"')
-        headers = results.next()
+        headers = next(results)
 
         headers_of_interest = []
 
@@ -724,7 +736,7 @@ class Search(object):
         if len(self._columns) != len(headers_of_interest):
             raise DataError('unvalid response headers')
 
-        return JsonTable([dict(zip(headers, res)) for res in results],
+        return JsonTable([dict(list(zip(headers, res))) for res in results],
                          headers_of_interest).select(headers_of_interest)
 
     def all(self):

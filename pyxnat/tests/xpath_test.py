@@ -1,3 +1,10 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 import os
 from .. import Interface
 
@@ -12,7 +19,7 @@ def test_elements():
     assert 'fs:region' in central.xpath.elements()
 
 def test_keys():
-    assert 'ID' in central.xpath.keys()
+    assert 'ID' in list(central.xpath.keys())
 
 def test_values():
     assert 'OAS1_0002' in central.xpath.values('ID')

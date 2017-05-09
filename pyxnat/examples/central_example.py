@@ -1,3 +1,10 @@
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 import os
 from subprocess import Popen
 import multiprocessing as mp
@@ -37,7 +44,7 @@ for f in central.select(query).where(filter_):
     if f.label().endswith('.hdr'):
         images.setdefault(label.split('.')[0], []).append(f)
     # download and process both occur in parallel within the workers
-    for name in images.keys():
+    for name in list(images.keys()):
         if len(images[name]) == 2: # if .img and .hdr XNAT references are ready
             img, hdr = images.pop(name)                        # get references
             pool.apply_async(bet, (img, hdr), callback=notify) # start worker

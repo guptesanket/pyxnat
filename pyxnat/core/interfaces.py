@@ -1,3 +1,13 @@
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import input
+from builtins import object
 import os
 import time
 import tempfile
@@ -11,7 +21,7 @@ try:
 except ImportError:
     socks = None
 try:
-    from urlparse import urlparse
+    from urllib.parse import urlparse
 except ImportError:
     from urllib.parse import urlparse
 from .select import Select
@@ -126,7 +136,7 @@ class Interface(object):
         if self._anonymous:
 
             if server is None:
-                self._server = raw_input('Server: ')
+                self._server = eval(input('Server: '))
                 self._interactive = True
             else:
                 self._server = server
@@ -167,12 +177,12 @@ class Interface(object):
 
             else:
                 if server is None:
-                    self._server = raw_input('Server: ')
+                    self._server = eval(input('Server: '))
                 else:
                     self._server = server
 
                 if user is None:
-                    user = raw_input('User: ')
+                    user = eval(input('User: '))
 
                 if password is None:
                     password = getpass.getpass()
@@ -346,12 +356,12 @@ class Interface(object):
         elif method is 'HEAD':
             response = self._http.head(uri, headers=headers, data=body, **kwargs)
         else:
-            print 'unsupported HTTP method'
+            print('unsupported HTTP method')
             return
 
         if (response is not None and not response.ok) or is_xnat_error(response.content):
             if DEBUG:
-                print(response.keys())
+                print(list(response.keys()))
                 print(response.get("status"))
 
             catch_error(response.content, '''pyxnat._exec failure:

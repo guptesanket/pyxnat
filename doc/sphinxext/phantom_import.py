@@ -14,6 +14,15 @@ without needing to rebuild the documented module.
 .. [1] http://code.google.com/p/pydocweb
 
 """
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from past.builtins import cmp
+from builtins import object
 import imp, sys, compiler, types, os, inspect, re
 
 def setup(app):
@@ -23,7 +32,7 @@ def setup(app):
 def initialize(app):
     fn = app.config.phantom_import_file
     if (fn and os.path.isfile(fn)):
-        print "[numpydoc] Phantom importing modules from", fn, "..."
+        print("[numpydoc] Phantom importing modules from", fn, "...")
         import_phantom_module(fn)
 
 #------------------------------------------------------------------------------
@@ -129,7 +138,7 @@ def import_phantom_module(xml_file):
                 doc = "%s%s\n\n%s" % (funcname, argspec, doc)
             obj = lambda: 0
             obj.__argspec_is_invalid_ = True
-            obj.func_name = funcname
+            obj.__name__ = funcname
             obj.__name__ = name
             obj.__doc__ = doc
             if inspect.isclass(object_cache[parent]):

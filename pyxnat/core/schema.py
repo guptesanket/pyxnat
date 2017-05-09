@@ -1,5 +1,13 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
 # REST collection resources tree
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from past.builtins import basestring
 resources_tree = {
     'projects'        :['subjects', 'resources'],
     'subjects'        :['experiments', 'resources'],
@@ -50,8 +58,8 @@ json = {'projects':['ID', 'ID'],
         'files':['path', 'path'],
         }
 
-resources_singular = [key.rsplit('s', 1)[0] for key in resources_tree.keys()]
-resources_plural   = resources_tree.keys()
+resources_singular = [key.rsplit('s', 1)[0] for key in list(resources_tree.keys())]
+resources_plural   = list(resources_tree.keys())
 resources_types    = resources_singular + list(resources_plural)
 
 default_datatypes = {'projects':'xnat:projectData',

@@ -1,3 +1,11 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 from .jsonutil import JsonTable
 
 class ArrayData(object):
@@ -38,7 +46,7 @@ class ArrayData(object):
         uri += query_string
 
         if constraints != {}:
-            uri += ',' + ','.join(constraints.keys())
+            uri += ',' + ','.join(list(constraints.keys()))
 
         if columns is not None:
             uri += ',' + ','.join(columns)
@@ -46,7 +54,7 @@ class ArrayData(object):
         c = {}
 
         [c.setdefault(key.lower(), value)
-         for key, value in constraints.items()
+         for key, value in list(constraints.items())
          ]
 
         return JsonTable(self._intf._get_json(uri)).where(**c)

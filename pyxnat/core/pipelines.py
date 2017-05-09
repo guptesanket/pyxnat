@@ -1,8 +1,16 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import *
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import sys
 import os
 import json
 import datetime
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import smtplib
 from copy import deepcopy
 import email.mime.text

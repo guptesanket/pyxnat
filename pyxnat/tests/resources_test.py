@@ -1,3 +1,12 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import next
+from past.builtins import basestring
 import os
 import socket
 import platform
@@ -138,7 +147,7 @@ def test_put_file():
     local_path = os.path.join(_modulepath, 'hello_xnat.txt')
     subj_1.resource('test').file('hello.txt').put(local_path)
     assert subj_1.resource('test').file('hello.txt').exists()
-    assert long(subj_1.resource('test').file('hello.txt').size()) == \
+    assert int(subj_1.resource('test').file('hello.txt').size()) == \
                                                 os.stat(local_path).st_size
 
 def test_get_file():
@@ -159,7 +168,7 @@ def test_put_dir_file():
     local_path = os.path.join(_modulepath, 'hello_again.txt')
     subj_1.resource('test').file('dir/hello.txt').put(local_path)
     assert subj_1.resource('test').file('dir/hello.txt').exists()
-    assert long(subj_1.resource('test').file('dir/hello.txt').size()) == \
+    assert int(subj_1.resource('test').file('dir/hello.txt').size()) == \
                                                 os.stat(local_path).st_size
 
 def test_get_dir_file():

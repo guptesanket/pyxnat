@@ -7,7 +7,14 @@ servers.
 
 Visit http://packages.python.org/pyxnat for more information.
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 from .version import VERSION as __version__
 
 from .core import Interface

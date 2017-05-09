@@ -1,3 +1,10 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 import os
 from uuid import uuid1
 import time
@@ -54,10 +61,10 @@ def test_attr_mset():
                   }
 
     subject.attrs.mset(field_data)
-    returned = subject.attrs.mget(field_data.keys())
+    returned = subject.attrs.mget(list(field_data.keys()))
 
     assert set(returned) == \
-        set(field_data.values()), '''set: %s returned: %s ''' %(field_data.values(), returned)
+        set(field_data.values()), '''set: %s returned: %s ''' %(list(field_data.values()), returned)
 
 def test_cleanup():
     subject.delete()

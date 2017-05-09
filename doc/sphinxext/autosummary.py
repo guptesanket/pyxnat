@@ -50,6 +50,14 @@ resolved to a Python object, and otherwise it becomes simple emphasis.
 This can be used as the default role to make links 'smart'.
 
 """
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import range
 import sys, os, posixpath, re
 
 from docutils.parsers.rst import directives
@@ -59,7 +67,7 @@ from docutils import nodes
 import sphinx.addnodes, sphinx.roles
 from sphinx.util import patfilter
 
-from docscrape_sphinx import get_doc_object
+from .docscrape_sphinx import get_doc_object
 
 
 def setup(app):
@@ -288,7 +296,7 @@ def _import_by_name(name):
         # ... then as MODNAME, MODNAME.OBJ1, MODNAME.OBJ1.OBJ2, ...
         last_j = 0
         modname = None
-        for j in reversed(range(1, len(name_parts)+1)):
+        for j in reversed(list(range(1, len(name_parts)+1))):
             last_j = j
             modname = '.'.join(name_parts[:j])
             try:
@@ -305,7 +313,7 @@ def _import_by_name(name):
             return obj
         else:
             return sys.modules[modname]
-    except (ValueError, ImportError, AttributeError, KeyError), e:
+    except (ValueError, ImportError, AttributeError, KeyError) as e:
         raise ImportError(e)
 
 #------------------------------------------------------------------------------

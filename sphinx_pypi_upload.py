@@ -11,22 +11,30 @@
     :license: BSD, see LICENSE for details.
 
 """
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
 
 
+from builtins import *
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 import os
 import socket
 try:
-    from httplib import HTTPConnection
+    from http.client import HTTPConnection
 except ImportError:
     from http.client import HTTPConnection
 import base64
 try:
-    import urlparse
+    import urllib.parse
 except ImportError:
     from urllib.parse import urlparse
 import tempfile
 try:
-    import cStringIO as StringIO
+    import io as StringIO
 except ImportError:
     from io import StringIO
 
@@ -73,7 +81,7 @@ class UploadDoc(upload):
         sep_boundary = '\n--' + boundary
         end_boundary = sep_boundary + '--'
         body = StringIO.StringIO()
-        for key, value in data.items():
+        for key, value in list(data.items()):
             # handle multiple entries for the same name
             if type(value) != type([]):
                 value = [value]
@@ -101,7 +109,7 @@ class UploadDoc(upload):
         # We can't use urllib2 since we need to send the Basic
         # auth right with the first request
         schema, netloc, url, params, query, fragments = \
-            urlparse.urlparse(self.repository)
+            urllib.parse.urlparse(self.repository)
         assert not params and not query and not fragments
         if schema == 'http':
             http = HTTPConnection(netloc)
@@ -139,7 +147,7 @@ class UploadDoc(upload):
             self.announce('Upload failed (%s): %s' % (response.status, response.reason),
                           log.ERROR)
         if self.show_response:
-            print('-'*75, response.read(), '-'*75)
+            print(('-'*75, response.read(), '-'*75))
 
     def run(self):
         zip_file = self.upload_file

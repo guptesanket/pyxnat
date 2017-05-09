@@ -1,3 +1,10 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 import os
 from functools import partial
 
@@ -52,7 +59,7 @@ def chain(ops, initEnv, initState, update_statef):
         
 # [str] -> str | None
 def find_plus_line(lines):
-    plusLines = filter (lambda x: x.startswith('+'), lines)
+    plusLines = [x for x in lines if x.startswith('+')]
     if len(plusLines) == 0:
         return None
     else:
@@ -60,7 +67,7 @@ def find_plus_line(lines):
 
 # char -> str -> (str,str) | None
 def find_token(tok,line):
-    splitString = map(lambda x: x.strip(), line.split(tok))
+    splitString = [x.strip() for x in line.split(tok)]
     if len(splitString) == 0 or len(splitString) == 1 or splitString[0] == '':
         return None
     else:
